@@ -23,7 +23,15 @@
   flex: 0 0 auto;
 }
 
-.inline-to-dropdown__dropdown-menu .inline-to-dropdown__item {
+.inline-to-dropdown__menu .inline-to-dropdown__item {
   display: block;
+}
+
+.inline-to-dropdown.js-inline-to-dropdown--loaded .inline-to-dropdown__group {
+  overflow: visible;
+}
+
+.js-window-resizing .inline-to-dropdown .inline-to-dropdown__group {
+  overflow: hidden;
 }
 /*# sourceMappingURL=inline-to-dropdown.css.map */

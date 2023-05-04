@@ -10,18 +10,30 @@
 
         inlineToDropdownEl.forEach(item => {
             reflowItems(item);
+            item.classList.add('js-inline-to-dropdown--loaded')
+        });
+
+        const windowElement = document.documentElement;
+        let windowWidth = window.innerWidth;
+        window.addEventListener('resize', () => {
+            let newWindowWidth = window.innerWidth;
+            if (windowWidth !== newWindowWidth) {
+                windowElement.classList.add('js-window-resizing');
+            }
+            windowWidth = newWindowWidth;
         });
 
         window.addEventListener('resize', debounce(() => {
             inlineToDropdownEl.forEach(item => {
                 reflowItems(item);
             });
+            windowElement.classList.remove('js-window-resizing');
         }));
         
         function reflowItems(el) {
             el.classList.add('js-dropdown-has-children');
             container = el.querySelector('.inline-to-dropdown__group');
-            dropdown = el.querySelector('.dropdown-menu');
+            dropdown = el.querySelector('.inline-to-dropdown__menu');
             dropdownChildren = dropdown.querySelectorAll('.inline-to-dropdown__item');
 
             dropdownChildren.forEach((item) => {
@@ -42,7 +54,7 @@
         }
 
         function isOverflown(element) {
-            return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+            return element.scrollWidth > element.clientWidth;
         }
 
         function debounce(func) {
