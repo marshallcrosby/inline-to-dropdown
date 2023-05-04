@@ -8,6 +8,7 @@ const sass = require('gulp-dart-sass');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cleanCss = require('gulp-clean-css');
+const rename = require('gulp-rename');
 
 // JS-related
 const minify = require('gulp-minify');
@@ -25,46 +26,51 @@ const roots = {
     dist: './dist',
 };
 
+const pluginName = 'inline-to-dropdown';
+
 // Move html to dist
-gulp.task('html', function (done) {
+gulp.task('html', () => {
     return gulp.src([`${roots.src}/index.html`])
         .pipe(gulp.dest(`${roots.dist}`))
         .pipe(connect.reload());
 });
 
 // Bundle javascript
-gulp.task('js', function (done) {            
-    return gulp.src([`${roots.src}/js/inline-to-dropdown.js`], { sourcemaps: true })
+gulp.task('js', () => {            
+    return gulp.src([`${roots.src}/js/${pluginName}.js`], { sourcemaps: true })
         .pipe(include())       
         .pipe(minify({
             ext: {
                 min: ".min.js",
             },
                 preserveComments: 'some'
-            
-        }))
+            }
+        ))
         .pipe(gulp.dest(`${roots.dist}/js`, { sourcemaps: '.' }))
         .pipe(connect.reload());
 });
 
 // Creates Main CSS sourcemaps, converts SCSS to CSS, adds prefixes, and lints CSS
-gulp.task('sass', function (done) {
+gulp.task('sass', () => {
     const plugins = [
         autoprefixer({ grid: true })
     ];
 
-    return gulp.src([`${roots.src}/scss/inline-to-dropdown.scss`])
+    return gulp.src([`${roots.src}/scss/${pluginName}.scss`])
         .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass())
         .pipe(postcss(plugins))
-        .pipe(cleanCss())
-        .pipe(gulp.dest(`${roots.dist}/css`))
         .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(`${roots.dist}/css`))
+        .pipe(rename(`${pluginName}.min.css`))
+        .pipe(cleanCss())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(`${roots.dist}/css`))
         .pipe(connect.reload());
 });
 
 // Runs a server to static HTML files and sets up watch tasks
-gulp.task('server', function (done) {
+gulp.task('server', (done) => {
     gulp.watch((`${roots.src}/**/*.html`), gulp.series('html'));
     gulp.watch((`${roots.src}/scss/**/*.scss`), gulp.series('sass', 'js'));
     gulp.watch((`${roots.src}/js/**/*`), gulp.series('sass', 'js'));
@@ -74,7 +80,7 @@ gulp.task('server', function (done) {
         livereload: true
     });
 
-    setTimeout(function () {
+    setTimeout(() => {
         return gulp.src(__filename)
             .pipe(open({ uri: localhost }));
     }, 2000);
@@ -82,7 +88,7 @@ gulp.task('server', function (done) {
     done();
 });
 
-gulp.task('watch', function (done) {
+gulp.task('watch', (done) => {
     gulp.watch((`${roots.src}/**/*.html`), gulp.series('html'));
     gulp.watch((`${roots.src}/scss/**/*.scss`), gulp.series('sass', 'js'));
     gulp.watch((`${roots.src}/js/**/*`), gulp.series('sass', 'js'));
