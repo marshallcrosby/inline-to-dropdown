@@ -1,3 +1,11 @@
+/*!
+    * Inline to dropdown v1.0.0
+    * Automatically add/remove overflown inline items into a dropdown.
+    *
+    * Copyright 2023 Marshall Crosby
+    * https://marshallcrosby.com
+*/
+
 (function() {
     const inlineToDropdownEl = document.querySelectorAll('.inline-to-dropdown');
 
@@ -14,6 +22,7 @@
         });
 
         const windowElement = document.documentElement;
+        
         let windowWidth = window.innerWidth;
         window.addEventListener('resize', () => {
             let newWindowWidth = window.innerWidth;
@@ -22,12 +31,17 @@
             }
             windowWidth = newWindowWidth;
         });
-
+        
+        let windowWidthDebounce = window.innerWidth;
         window.addEventListener('resize', debounce(() => {
-            inlineToDropdownEl.forEach(item => {
-                reflowItems(item);
-            });
-            windowElement.classList.remove('js-window-resizing');
+            let newWindowWidthDebounce = window.innerWidth;
+            if (windowWidthDebounce !== newWindowWidthDebounce) {
+                inlineToDropdownEl.forEach(item => {
+                    reflowItems(item);
+                });
+                windowElement.classList.remove('js-window-resizing');
+            }
+            windowWidthDebounce = newWindowWidthDebounce;
         }));
         
         function reflowItems(el) {
@@ -62,7 +76,7 @@
 
             return function(event){
                 if (timer) clearTimeout(timer);
-                timer = setTimeout(func, 100, event);
+                timer = setTimeout(func, 200, event);
             };
         }
     }
