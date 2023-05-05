@@ -1,3 +1,10 @@
+/*!
+    * Inline to dropdown v1.0.1
+    * Automatically add/remove overflown inline items into a dropdown.
+    *
+    * Copyright 2023 Marshall Crosby
+    * https://marshallcrosby.com
+*/
 :root {
   --inline-to-dropdown-gap: 20px;
 }
@@ -17,6 +24,7 @@
   min-width: 0;
   white-space: nowrap;
   gap: var(--inline-to-dropdown-gap);
+  opacity: 0;
 }
 
 .inline-to-dropdown__dropdown {
@@ -29,6 +37,7 @@
 
 .inline-to-dropdown.js-inline-to-dropdown--loaded .inline-to-dropdown__group {
   overflow: visible;
+  opacity: 1;
 }
 
 .js-window-resizing .inline-to-dropdown .inline-to-dropdown__group {

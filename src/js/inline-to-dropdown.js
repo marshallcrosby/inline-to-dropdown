@@ -1,5 +1,5 @@
 /*!
-    * Inline to dropdown v1.0.0
+    * Inline to dropdown v1.0.1
     * Automatically add/remove overflown inline items into a dropdown.
     *
     * Copyright 2023 Marshall Crosby
