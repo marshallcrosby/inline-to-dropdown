@@ -14,7 +14,7 @@
   width: 100%;
   gap: var(--inline-to-dropdown-gap);
 }
-.inline-to-dropdown:not(.js-dropdown-has-children) .inline-to-dropdown__dropdown {
+.inline-to-dropdown:not(:has(.inline-to-dropdown__menu .inline-to-dropdown__item)) .inline-to-dropdown__dropdown {
   display: none;
 }
 

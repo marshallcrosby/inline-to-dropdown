@@ -15,7 +15,7 @@
     width: 100%;
     gap: var(--inline-to-dropdown-gap);
 
-    &:not(.js-dropdown-has-children) {
+    &:not(:has(.inline-to-dropdown__menu .inline-to-dropdown__item)) {
         .inline-to-dropdown__dropdown {
             display: none;
         }
